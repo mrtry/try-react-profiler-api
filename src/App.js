@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+const Context = React.createContext({ count: 0 })
+
+export default () => {
+  const [state, setState ] = useState(0);
+  const increment = current => setState(current + 1)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Profiler id="App" onRender={onRenderCallback}>
+      <div>
+        <h1>count: {state}</h1>
+        <button onClick={() => increment(state)}>Increment</button>
+      </div>
+    </React.Profiler>
   );
 }
 
-export default App;
+function onRenderCallback(
+  id,
+  phase,
+  actualDuration,
+  baseDuration,
+  startTime,
+  commitTime,
+  interactions
+) {
+  //Logic to handle the profiling details
+  console.log(`id: ${id},\nphase: ${phase},\nactualDuration: ${actualDuration},\nbaseDuration: ${baseDuration},\nstartTime: ${startTime},\ncommitTime: ${commitTime},\ninteractions: ${interactions}`);
+  console.dir(interactions)
+}
